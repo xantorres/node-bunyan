@@ -113,12 +113,23 @@ test010:
 
 #---- check
 
+ESLINT = ./node_modules/.bin/eslint
+$(ESLINT):
+	npm install
+
+check:: check-eslint
+
+.PHONY: check-eslint
+check-eslint: | $(ESLINT)
+	@$(ESLINT) ./
+
+
 .PHONY: check-jsstyle
 check-jsstyle: $(JSSTYLE_FILES)
 	./tools/jsstyle -o indent=4,doxygen,unparenthesized-return=0,blank-after-start-comment=0,leading-right-paren-ok=1 $(JSSTYLE_FILES)
 
 .PHONY: check
-check: check-jsstyle
+check:: check-jsstyle
 	@echo "Check ok."
 
 .PHONY: prepush
